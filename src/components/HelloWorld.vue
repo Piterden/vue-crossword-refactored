@@ -114,6 +114,11 @@ export default {
               ? null
               : this.cells[curr.row + 1][curr.col]
 
+            if ((row === 0 && !next.live) ||
+              (row > 0 && !prev.live && !next.live)) {
+              continue
+            }
+
             if ((row === 0 && next.live) || (row > 0 && !prev.live)) {
               words.push({ direction: VERT, row, col, length: 1, letters: ' ' })
             } else {
@@ -133,6 +138,11 @@ export default {
             const next = col === this.height - 1
               ? null 
               : this.cells[curr.row][curr.col + 1]
+
+            if ((col === 0 && !next.live) ||
+              (col > 0 && !prev.live && !next.live)) {
+              continue
+            }
 
             if ((col === 0 && next.live) || (col > 0 && !prev.live)) {
               words.push({ direction: HORI, col, row, length: 1, letters: ' ' })
