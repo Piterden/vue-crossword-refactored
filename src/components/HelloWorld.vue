@@ -109,13 +109,16 @@ export default {
           const curr = this.cells[row][col]
 
           if (curr.live) {
-            const prev = row ? this.cells[curr.row - 1][curr.col] : null
-            const next = row === this.width - 1
-              ? null
+            const prev = row === 0
+              ? false
+              : this.cells[curr.row - 1][curr.col]
+            const next = row === (this.width - 1)
+              ? false
               : this.cells[curr.row + 1][curr.col]
 
             if ((row === 0 && !next.live) ||
-              (row > 0 && !prev.live && !next.live)) {
+              (row > 0 && !prev.live && !next.live) ||
+              (!next && !prev.live)) {
               continue
             }
 
@@ -134,13 +137,16 @@ export default {
           const curr = this.cells[row][col]
 
           if (curr.live) {
-            const prev = col ? this.cells[curr.row][curr.col - 1] : null
-            const next = col === this.height - 1
-              ? null 
+            const prev = col === 0
+              ? false
+              : this.cells[curr.row][curr.col - 1]
+            const next = col === (this.height - 1)
+              ? false 
               : this.cells[curr.row][curr.col + 1]
 
             if ((col === 0 && !next.live) ||
-              (col > 0 && !prev.live && !next.live)) {
+              (col > 0 && !prev.live && !next.live) ||
+              (!next && !prev.live)) {
               continue
             }
 
