@@ -57,8 +57,10 @@ typings/
 
 # dotenv environment variables file
 .env
+.*.env
 
-*.traineddata
-files/
+# Custom
+.DS_Store
+dist
 
 package-lock.json
