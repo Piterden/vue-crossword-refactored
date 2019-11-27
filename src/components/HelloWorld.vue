@@ -43,11 +43,11 @@
           class="cell"
           v-for="(cell, colIdx) in row"
           :key="colIdx"
-          @click.ctrl="cells[cell.row][cell.col].live = !cell.live"
-          @click.alt="cells[cell.row][cell.col].live = !cell.live"
+          @click.ctrl="toggleLive($event, cell)"
+          @click.alt="toggleLive($event, cell)"
         >
           <div class="number">
-            {{ cells[rowIdx] && cells[rowIdx][colIdx].number }}
+            {{ cell.number || '' }}
           </div>
           <input
             v-show="cell.live"
@@ -70,8 +70,8 @@ export default {
   name: "HelloWorld",
 
   data () {
-    const width = 10
-    const height = 10
+    const width = 15
+    const height = 15
 
     return {
       width,
@@ -109,14 +109,22 @@ export default {
           const curr = this.cells[row][col]
 
           if (curr.live) {
-            const prev = row ? this.cells[row - 1][col] : null
-            const next = row === this.width - 1
-              ? null
-              : this.cells[row + 1][col]
+            const prev = row === 0
+              ? false
+              : this.cells[curr.row - 1][curr.col]
+            const next = row === (this.width - 1)
+              ? false
+              : this.cells[curr.row + 1][curr.col]
 
-            if ((row === 0 || (prev && !prev.live)) && (next && next.live)) {
+            if ((row === 0 && !next.live) ||
+              (row > 0 && !prev.live && !next.live) ||
+              (!next && !prev.live)) {
+              continue
+            }
+
+            if ((row === 0 && next.live) || (row > 0 && !prev.live)) {
               words.push({ direction: VERT, row, col, length: 1, letters: ' ' })
-            } else if (!(row === this.width - 1 && (prev && !prev.live))) {
+            } else {
               words[words.length - 1].length += 1
               words[words.length - 1].letters += ' '
             }
@@ -129,14 +137,22 @@ export default {
           const curr = this.cells[row][col]
 
           if (curr.live) {
-            const prev = col ? this.cells[row][col - 1] : null
-            const next = col === this.height - 1
-              ? null
-              : this.cells[row][col + 1]
+            const prev = col === 0
+              ? false
+              : this.cells[curr.row][curr.col - 1]
+            const next = col === (this.height - 1)
+              ? false 
+              : this.cells[curr.row][curr.col + 1]
 
-            if ((col === 0 || (prev && !prev.live)) && (next && next.live)) {
+            if ((col === 0 && !next.live) ||
+              (col > 0 && !prev.live && !next.live) ||
+              (!next && !prev.live)) {
+              continue
+            }
+
+            if ((col === 0 && next.live) || (col > 0 && !prev.live)) {
               words.push({ direction: HORI, col, row, length: 1, letters: ' ' })
-            } else if (!(col === this.height - 1 && (prev && !prev.live))) {
+            } else {
               words[words.length - 1].length += 1
               words[words.length - 1].letters += ' '
             }
@@ -156,6 +172,12 @@ export default {
           .map(({ row, col }) => `${row}:${col}`)
       )]
 
+      for (let row = 0; row < this.cells.length; row += 1) {
+        for (let col = 0; col < this.cells[row].length; col += 1) {
+          this.cells[row][col].number = null
+        }
+      }
+
       numbers.forEach((number, index) => {
         const [, row, col] = number.match(/(\d+):(\d+)/)
         this.cells[row][col].number = index + 1
@@ -164,8 +186,9 @@ export default {
       return words
     },
 
-    editLetter (e, row, col) {
-      this.cells[row][col].letter = e.target.value
+    toggleLive (e, cell) {
+      console.log(cell)
+      cell.live = !cell.live
     },
   },
 };
@@ -189,6 +212,10 @@ export default {
   cursor: pointer;
   position: relative;
 }
+.number {
+  position: absolute;
+  font-size: 10px;
+}
 .row input {
   background: transparent;
   border: none;
@@ -197,6 +224,7 @@ export default {
   width: 100%;
   height: 100%;
   line-height: 25px;
+  font-size: 18px;
 }
 .form input {
   text-align: center;
