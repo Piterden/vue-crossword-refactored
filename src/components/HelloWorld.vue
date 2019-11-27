@@ -43,8 +43,8 @@
           class="cell"
           v-for="(cell, colIdx) in row"
           :key="colIdx"
-          @click.ctrl="cell.live = !cell.live"
-          @click.alt="cell.live = !cell.live"
+          @click.ctrl="cells[cell.row][cell.col].live = !cell.live"
+          @click.alt="cells[cell.row][cell.col].live = !cell.live"
         >
           <div class="number">
             {{ cells[rowIdx] && cells[rowIdx][colIdx].number }}
@@ -131,7 +131,7 @@ export default {
           if (curr.live) {
             const prev = col ? this.cells[row][col - 1] : null
             const next = col === this.height - 1
-              ? null 
+              ? null
               : this.cells[row][col + 1]
 
             if ((col === 0 || (prev && !prev.live)) && (next && next.live)) {
