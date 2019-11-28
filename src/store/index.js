@@ -51,7 +51,7 @@ const store = new Vuex.Store({
       Vue.set(
         state.words[state.words.length - 1],
         prop,
-        state.words[state.words.length - 1][prop] + value
+        state.words[state.words.length - 1][prop] + value,
       )
     },
 
