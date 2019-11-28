@@ -3,48 +3,48 @@
     <div class="form">
       <div class="horizontal">
         <div
-          class="word-field"
           v-for="(word, idx) in horizontalWords"
           :key="idx"
+          class="word-field"
         >
           <div class="number">{{ cells[word.row][word.col].number }}</div>
           <input
             v-for="(letter, index) in Array.from(word.letters)"
             v-model="cells[word.row][word.col + index].letter"
+            :key="index"
             type="text"
             maxlength="1"
             size="1"
-            :key="index"
           />
         </div>
       </div>
       <div class="vertical">
         <div
-          class="word-field"
           v-for="(word, idx) in verticalWords"
           :key="idx"
+          class="word-field"
         >
           <div class="number">{{ cells[word.row][word.col].number }}</div>
           <input
             v-for="(letter, index) in Array.from(word.letters)"
             v-model="cells[word.row + index][word.col].letter"
+            :key="index"
             type="text"
             maxlength="1"
             size="1"
-            :key="index"
           />
         </div>
       </div>
     </div>
     <div>
-      <div class="row" v-for="(row, rowIdx) in cells" :key="rowIdx">
+      <div v-for="(row, rowIdx) in cells" :key="rowIdx" class="row">
         <div
-          :class="cell.live ? '' : 'blank'"
-          class="cell"
-          v-for="(cell, colIdx) in row"
-          :key="colIdx"
           @click.ctrl="toggleLive($event, cell)"
           @click.alt="toggleLive($event, cell)"
+          v-for="(cell, colIdx) in row"
+          :key="colIdx"
+          :class="cell.live ? '' : 'blank'"
+          class="cell"
         >
           <div class="number">
             {{ cell.number || '' }}
@@ -193,50 +193,3 @@ export default {
   },
 };
 </script>
-
-<style lang="stylus">
-.wrapper
-.word-field
-
-.form
-  display flex
-
-  input
-    text-align center
-    border 1px solid magenta
-    display block
-
-.blank
-  background #000
-
-.cell
-  border 1px solid
-  margin -1px -1px 0 0
-  display block
-  width 25px
-  height 25px
-  cursor pointer
-  position relative
-
-.number
-  position absolute
-  font-size 10px
-
-.row
-  display flex
-
-  input
-    background transparent
-    border none
-    display block
-    text-align center
-    width 100%
-    height 100%
-    line-height 25px
-    font-size 18px
-
-.word-field
-  border: 1px solid
-  margin-bottom: 10px
-
-</style>
