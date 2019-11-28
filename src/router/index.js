@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import { Builder } from '@/pages'
+import { Builder, Solver } from '@/pages'
 
 Vue.use(VueRouter)
 
@@ -16,6 +16,10 @@ const router = new VueRouter({
     {
       path: '/builder',
       component: Builder,
+    },
+    {
+      path: '/solver',
+      component: Solver,
     },
   ],
 })
