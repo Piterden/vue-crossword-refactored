@@ -3,6 +3,6 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-const store = new Vuex()
+const store = {}
 
 export { store }

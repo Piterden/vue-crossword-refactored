@@ -17,7 +17,7 @@ const router = new VueRouter({
       path: '/builder',
       component: Builder,
     },
-  ]
+  ],
 })
 
 export { router }
