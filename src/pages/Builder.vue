@@ -67,7 +67,7 @@ const HORI = 0
 const VERT = 1
 
 export default {
-  name: "Builder",
+  name: 'Builder',
 
   data () {
     const width = 15
@@ -166,11 +166,13 @@ export default {
 
   methods: {
     addNumbers (words) {
-      const numbers = [...new Set(
-        words
-          .sort((a, b) => a.row - b.row || a.col - b.col)
-          .map(({ row, col }) => `${row}:${col}`)
-      )]
+      const numbers = [
+        ...new Set(
+          words
+            .sort((one, two) => one.row - two.row || one.col - two.col)
+            .map(({ row, col }) => `${row}:${col}`)
+        ),
+      ]
 
       for (let row = 0; row < this.cells.length; row += 1) {
         for (let col = 0; col < this.cells[row].length; col += 1) {
@@ -180,6 +182,7 @@ export default {
 
       numbers.forEach((number, index) => {
         const [, row, col] = number.match(/(\d+):(\d+)/)
+
         this.cells[row][col].number = index + 1
       })
 
@@ -191,5 +194,5 @@ export default {
       cell.live = !cell.live
     },
   },
-};
+}
 </script>
