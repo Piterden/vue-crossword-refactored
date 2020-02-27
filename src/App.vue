@@ -30,6 +30,7 @@ body
       text-align center
       border 1px solid magenta
       display block
+      width 18px
 
   .blank
     background #000

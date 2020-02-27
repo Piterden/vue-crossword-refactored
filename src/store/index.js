@@ -5,8 +5,8 @@ Vue.use(Vuex)
 
 const HORI = 0
 const VERT = 1
-const INITIAL_WIDTH = 15
-const INITIAL_HEIGHT = 15
+const INITIAL_WIDTH = 25
+const INITIAL_HEIGHT = 25
 
 const store = new Vuex.Store({
   state: {
@@ -26,6 +26,11 @@ const store = new Vuex.Store({
         }),
       ),
     ),
+    symmetria: {
+      horizontal: true,
+      vertical: true,
+      diagonal: true,
+    },
   },
 
   getters: {
@@ -43,6 +48,10 @@ const store = new Vuex.Store({
   },
 
   mutations: {
+    toggleSymmetria (state, { type }) {
+      Vue.set(state.symmetria, type, !state.symmetria[type])
+    },
+
     setCellProp (state, { row, col, prop, value }) {
       Vue.set(state.cells[row][col], prop, value)
     },
@@ -61,6 +70,9 @@ const store = new Vuex.Store({
 
     toggleLive (state, { col, row }) {
       Vue.set(state.cells[row][col], 'live', !state.cells[row][col].live)
+      Vue.set(state.cells[state.width - 1 - row][col], 'live', !state.cells[state.width - 1 - row][col].live)
+      Vue.set(state.cells[row][state.height - 1 - col], 'live', !state.cells[row][state.height - 1 - col].live)
+      Vue.set(state.cells[state.width - 1 - row][state.height - 1 - col], 'live', !state.cells[state.width - 1 - row][state.height - 1 - col].live)
     },
 
     clearWords (state) {
